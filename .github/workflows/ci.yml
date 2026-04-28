@@ -1,0 +1,37 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Mettre a jour pip
+        run: python -m pip install --upgrade pip
+
+      - name: Installer les dependances
+        run: pip install -r requirements.txt
+
+      - name: Analyse syntaxique avec pylint
+        run: pylint *.py
+
+      - name: Analyse securite avec bandit
+        run: bandit -r .
+
+      - name: Audit des dependances avec pip-audit
+        run: pip-audit
