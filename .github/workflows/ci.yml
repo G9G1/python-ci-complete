@@ -27,11 +27,14 @@ jobs:
       - name: Installer les dependances
         run: pip install -r requirements.txt
 
+      - name: Lancer les tests unitaires
+        run: pytest
+
       - name: Analyse syntaxique avec pylint
         run: pylint *.py
 
       - name: Analyse securite avec bandit
-        run: bandit -r .
+        run: bandit -r . -x test_counter.py
 
       - name: Audit des dependances avec pip-audit
         run: pip-audit
